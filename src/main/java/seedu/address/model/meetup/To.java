@@ -42,6 +42,13 @@ public class To {
     }
 
     /**
+     * Returns true if this instance of To occurs after the given instance of From.
+     */
+    public boolean isValidToFrom(LocalDateTime from) {
+        return this.value.isAfter(from);
+    }
+
+    /**
      * Returns pretty formatted LocalDateTime String
      */
     public String toPrettyString() {

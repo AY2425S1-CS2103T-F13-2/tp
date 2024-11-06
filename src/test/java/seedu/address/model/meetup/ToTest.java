@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.junit.jupiter.api.Test;
 
 public class ToTest {
@@ -46,6 +49,24 @@ public class ToTest {
         assertTrue(To.isValidTo("2024-01-01 00:00")); // first day of the year
         assertTrue(To.isValidTo("2022-06-25 14:30")); // past date
         assertTrue(To.isValidTo("2050-10-01 10:28")); // future date
+    }
+
+    @Test
+    public void isValidToFrom() {
+        To to = new To("2024-01-01 23:59");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        // same values -> returns false
+        LocalDateTime from = LocalDateTime.parse("2024-01-01 23:59", formatter);
+        assertFalse(to.isValidToFrom(from));
+
+        // from before to -> returns true
+        from = LocalDateTime.parse("2023-01-01 23:59", formatter);
+        assertTrue(to.isValidToFrom(from));
+
+        // from after to -> returns false
+        from = LocalDateTime.parse("2025-01-01 23:59", formatter);
+        assertFalse(to.isValidToFrom(from));
     }
 
     @Test
