@@ -52,6 +52,27 @@ public class AddCommandTest {
     }
 
     @Test
+    public void execute_invalidToFrom_throwsCommandException() {
+        ModelStub modelStub = new ModelStubAcceptingMeetUpAdded();
+
+        // to before from throws CommandException
+        MeetUp meetUpInvalidToFrom = new MeetUpBuilder().withTo("2024-09-01 11:00").build();
+        AddCommand addCommand1 = new AddCommand(meetUpInvalidToFrom);
+
+        assertThrows(CommandException.class,
+                String.format(AddCommand.MESSAGE_INVALID_TO_FROM, meetUpInvalidToFrom.getTo(),
+                        meetUpInvalidToFrom.getFrom()), () -> addCommand1.execute(modelStub));
+
+        // to same as from throws CommandException
+        meetUpInvalidToFrom = new MeetUpBuilder().withFrom("2024-09-01 14:00").build();
+        AddCommand addCommand2 = new AddCommand(meetUpInvalidToFrom);
+
+        assertThrows(CommandException.class,
+                String.format(AddCommand.MESSAGE_INVALID_TO_FROM, meetUpInvalidToFrom.getTo(),
+                        meetUpInvalidToFrom.getFrom()), () -> addCommand2.execute(modelStub));
+    }
+
+    @Test
     public void equals() {
         MeetUp meetUpA = new MeetUpBuilder().withSubject("meetUpA").build();
         MeetUp meetUpB = new MeetUpBuilder().withSubject("meetUpB").build();
@@ -83,7 +104,7 @@ public class AddCommandTest {
     }
 
     /**
-     * A Model stub that contains a single buyer.
+     * A Model stub that contains a single meetup.
      */
     private class ModelStubWithMeetUp extends ModelStub {
         private final MeetUp meetUp;
