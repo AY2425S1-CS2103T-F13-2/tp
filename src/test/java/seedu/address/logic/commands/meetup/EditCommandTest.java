@@ -144,6 +144,17 @@ public class EditCommandTest {
         assertCommandFailure(editCommand, model, Messages.MESSAGE_INVALID_MEETUP_DISPLAYED_INDEX);
     }
 
+    @Test
+    public void execute_invalidMeetupToFrom_failure() {
+        MeetUp firstMeetUp = model.getFilteredMeetUpList().get(INDEX_FIRST.getZeroBased());
+        EditMeetUpDescriptor descriptor = new EditMeetUpDescriptorBuilder(firstMeetUp)
+                .withTo("2024-12-01 12:00").build();
+        EditCommand editCommand = new EditCommand(INDEX_FIRST, descriptor);
+        assertCommandFailure(editCommand, model,
+                String.format(EditCommand.MESSAGE_INVALID_TO_FROM, descriptor.getTo().get(),
+                        descriptor.getFrom().get()));
+    }
+
     /**
      * Edit filtered list where index is larger than size of filtered list,
      * but smaller than size of meetup list

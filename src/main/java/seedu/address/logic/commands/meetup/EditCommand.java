@@ -57,6 +57,7 @@ public class EditCommand extends Command {
     public static final String MESSAGE_EDIT_MEETUP_SUCCESS = "Edited meet-up: %1$s";
     public static final String MESSAGE_MEETUP_NOT_EDITED = "Please check for missing fields or invalid format.";
     public static final String MESSAGE_DUPLICATE_MEETUP = "This meet-up already exists in the meet-up list.";
+    public static final String MESSAGE_INVALID_TO_FROM = "To ($1%s) must occur after from ($2%s)";
 
     private final Index targetIndex;
     private final EditMeetUpDescriptor editMeetUpDescriptor;
@@ -99,7 +100,7 @@ public class EditCommand extends Command {
      * edited with {@code editBuyerDescriptor}.
      */
     private static MeetUp createEditedMeetUp(MeetUp meetUpToEdit,
-                                             EditMeetUpDescriptor editMeetUpDescriptor) {
+                                             EditMeetUpDescriptor editMeetUpDescriptor) throws CommandException {
         requireNonNull(meetUpToEdit);
         requireNonNull(editMeetUpDescriptor);
 
@@ -109,6 +110,11 @@ public class EditCommand extends Command {
         To updatedTo = editMeetUpDescriptor.getTo().orElse(meetUpToEdit.getTo());
         Set<AddedBuyer> updatedAddedBuyers = editMeetUpDescriptor.getAddedBuyers()
                 .orElse(meetUpToEdit.getAddedBuyers());
+
+        if (!updatedTo.isValidToFrom(updatedFrom.value)) {
+            throw new CommandException(String.format(MESSAGE_INVALID_TO_FROM, updatedTo, updatedFrom));
+        }
+
         return new MeetUp(updatedSubject, updatedInfo, updatedFrom, updatedTo, updatedAddedBuyers);
     }
 
