@@ -13,7 +13,7 @@ import java.util.Locale;
 public class Budget {
 
     public static final String MESSAGE_CONSTRAINTS = "Budget of the buyer (to the nearest SGD). "
-            + "It should be a positive integer more than 0 and not be blank. \n"
+            + "It should be a positive integer more than 0, less than 1,000,000,000, and not be blank. \n"
             + "It can contain commas at the right positions (exactly 3 digits after each comma) \n"
             + "E.g. 10,000 and 10000 are both accepted but 1,0000 is NOT accepted). ";
 
@@ -22,7 +22,7 @@ public class Budget {
      * It can contain commas in the correct position e.g. 1,000 and 10,000.
      * It can have leading or trailing zeros and cannot be blank.
      */
-    public static final String VALIDATION_REGEX = "^0*([1-9]\\d*|[1-9]\\d{0,2}(,\\d{3})*)$";
+    public static final String VALIDATION_REGEX = "^0*([1-9]\\d{0,2}(,\\d{3}){0,2}|[1-9]\\d{0,8})$";
 
     public final String value;
 

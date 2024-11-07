@@ -13,11 +13,11 @@ import java.util.Locale;
 public class AskingPrice {
 
     public static final String MESSAGE_CONSTRAINTS = "Asking price of property (to the nearest SGD). \n"
-            + "It should be a positive integer more than 0 and not be blank. \n"
+            + "It should be a positive integer more than 0, less than 1,000,000,000, and not be blank. \n"
             + "It can contain commas at the right positions (exactly 3 digits after each comma) \n"
             + "E.g. 10,000 and 10000 are both accepted but 1,0000 is NOT accepted). ";
 
-    public static final String VALIDATION_REGEX = "^0*([1-9]\\d*|[1-9]\\d{0,2}(,\\d{3})*)$";
+    public static final String VALIDATION_REGEX = "^0*([1-9]\\d{0,2}(,\\d{3}){0,2}|[1-9]\\d{0,8})$";
 
     public final String value;
 
